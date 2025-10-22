@@ -6,7 +6,6 @@ Data
 gc_credentials
 *.env
 artifacts/raw/
-artifacts/models/
 artifacts/processed/
 artifacts/weights/
 artifacts/model_checkpoint/
