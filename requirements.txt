@@ -1,0 +1,16 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+ipykernel
+pyyaml
+google-cloud-storage
+tensorflow
+keras
+joblib
+comet-ml
+python-dotenv
+dvc
+
+-e .
