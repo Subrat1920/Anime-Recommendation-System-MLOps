@@ -1,0 +1,4 @@
+[core]
+    remote = recommendation_remote
+['remote "recommendation_remote"']
+    url = gs://recommendation-dvc-bucket-02/
