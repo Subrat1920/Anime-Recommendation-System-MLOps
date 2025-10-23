@@ -22,7 +22,7 @@ pipeline{
                     echo "Creating a virtual environment for dependencies..."
 
                     sh '''
-                    py -3.11 -m venv ${VENV_DIR}
+                    python -m venv ${VENV_DIR}
                     . ${VENV_DIR}/bin/activate
                     pip install --upgrade pip
                     pip install -r requirements.txt
