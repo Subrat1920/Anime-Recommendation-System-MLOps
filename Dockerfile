@@ -39,4 +39,4 @@ EXPOSE 5000
 
 # Default command to run the Flask app
 # (update "app:app" if your main file or Flask instance name differs)
-CMD ["python", "app.py"]
+CMD ["python", "application.py"]
