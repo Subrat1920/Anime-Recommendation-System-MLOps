@@ -1,35 +1,42 @@
-FROM python:3.8-slim
+# ==============================
+# Base Image
+# ==============================
+FROM python:3.10-slim
 
-# Prevent Python from buffering stdout/stderr and writing .pyc files
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-
-# Install system dependencies for TensorFlow and scientific libs
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libatlas-base-dev \
-    libhdf5-dev \
-    libprotobuf-dev \
-    protobuf-compiler \
-    python3-dev \
- && rm -rf /var/lib/apt/lists/*
-
-# Set work directory
+# Set working directory
 WORKDIR /app
 
-# Copy dependency list and install
-COPY requirements.txt .
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install --default-timeout=200 --retries 10 --no-cache-dir -r requirements.txt
+# Prevent Python from writing pyc files and buffering stdout
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Copy application source code
+# Install system dependencies (optional but common)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# ==============================
+# Install Dependencies
+# ==============================
+# Copy only dependency files first to leverage caching
+COPY requirements.txt setup.py ./
+
+# Upgrade pip, setuptools, wheel
+RUN pip install --upgrade pip setuptools wheel
+
+# Install dependencies (includes -e . for editable install)
+RUN pip install --default-timeout=200 --retries 10 --no-cache-dir -r requirements.txt
+
+# ==============================
+# Copy Source Code
+# ==============================
 COPY . .
 
-# (Optional) Train the model inside container — slow, use only if necessary
-RUN python pipeline/training_pipeline.py
-
-# Expose the Flask port
+# ==============================
+# Expose Flask Port & Run
+# ==============================
 EXPOSE 5000
 
-# Default command
-CMD ["python", "application.py"]
+# Default command to run the Flask app
+# (update "app:app" if your main file or Flask instance name differs)
+CMD ["python", "app.py"]
