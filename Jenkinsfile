@@ -61,7 +61,7 @@ pipeline{
                         export PATH=$PATH:${GCLOUD_PATH}
                         gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
                         gcloud config set project ${GCP_PROJECT}
-                        gcloud auth configure-docker --quite
+                        gcloud auth configure-docker --quiet
                         docker build -t gcr.io/${GCP_PROJECT}/anime-recommendation-system:latest .
                         docker push gcr.io/${GCP_PROJECT}/anime-recommendation-system:latest
                         '''
@@ -83,7 +83,7 @@ pipeline{
                         gcloud config set project ${GCP_PROJECT}
                         gcloud container clusters get-credentials anime-recommendation-cluster --region us-central1
                         kubectl apply -f deployment.yaml
-                        
+
                         '''
                     }
                 }                    
